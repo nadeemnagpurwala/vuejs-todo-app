@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Tasks :title="title" :tasks="tasks"/>
+    <Tasks :title="title" :tasks="tasks" @delete:task="deleteTask" />
   </div>
 </template>
 
@@ -35,6 +35,13 @@ export default {
       ],
     }
   },
+  methods: {
+    deleteTask: function (id) {
+        this.tasks = this.tasks.filter(
+          task => task.id !== id
+        )
+    }
+  }
 }
 </script>
 
