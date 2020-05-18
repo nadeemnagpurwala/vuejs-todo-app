@@ -3,10 +3,12 @@
         <h1>{{ title }}</h1>
         <table>
             <tr>
+                <th>Change Status</th>
                 <th>Name</th>
                 <th>Completed</th>
             </tr>
-            <tr v-for="task in tasks" :key="task.id">
+            <tr v-for="task in tasks" :key="task.id" :class="{ 'is-completed': task.completed }">
+                <td><input type="checkbox" @click="changeStatus(task)" :checked="task.completed"></td>
                 <td>{{ task.name }}</td>
                 <td v-if=task.completed>Yes</td>
                 <td v-else>No</td>
@@ -21,6 +23,12 @@ export default {
     props: {
         title: String,
         tasks: Array,
+    },
+    methods: {
+        changeStatus: function (task) {
+            console.log(task.completed)
+            task.completed = !task.completed
+        }
     }
 }
 </script>
@@ -37,7 +45,8 @@ td, th {
   padding: 8px;
 }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
+.is-completed {
+    background-color: #41b883;
+    color: #fff;
 }
 </style>
