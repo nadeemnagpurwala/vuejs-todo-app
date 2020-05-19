@@ -22,10 +22,10 @@
 
                 <td v-if="editMode === task.id">
                     <button class="btn btn-success" @click="updateTask(task)">Save</button>
-                    <button class="btn btn-default" @click="editMode = null">Cancel</button>
+                    <button class="btn btn-default" @click="cancelEdit(task)">Cancel</button>
                 </td>
                 <td v-else>
-                    <button class="btn btn-info" @click="setEditMode(task.id)">Edit</button>
+                    <button class="btn btn-info" @click="setEditMode(task)">Edit</button>
                     <button class="btn btn-danger" @click="$emit('delete:task', task.id)">Delete</button>
                 </td>
             </tr>
@@ -43,14 +43,16 @@ export default {
     data: function() {
         return {
             editMode: '',
+            oldData: ''
         }
     },
     methods: {
         updateTaskStatus: function (task) {
             task.completed = !task.completed
         },
-        setEditMode: function (id) {
-            this.editMode = id
+        setEditMode: function (task) {
+            this.editMode = task.id
+            this.oldData = JSON.parse(JSON.stringify(task))
         },
         updateTask: function (task) {
             if (task.name === '') {
@@ -60,6 +62,10 @@ export default {
             this.$emit('update:task', task.id, task)
             this.editMode = null
         },
+        cancelEdit: function (task) {
+            task.name = this.oldData.name
+            this.editMode = null
+        }
     }
 }
 </script>
