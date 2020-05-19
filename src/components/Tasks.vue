@@ -10,11 +10,24 @@
                 <th>Action</th>
             </tr>
             <tr v-for="task in tasks" :key="task.id" :class="{ 'is-completed': task.completed }">
-                <td><input type="checkbox" @click="updateTask(task)" :checked="task.completed"></td>
+                <td><input type="checkbox" @click="updateTaskStatus(task)" :checked="task.completed"></td>
                 <td>{{ task.id }}</td>
-                <td>{{ task.name }}</td>
+                
+                <td v-if="editMode === task.id">
+                    <input type="text" class="form-control" v-model="task.name" placeholder="Name of the task">
+                </td>
+                <td v-else>{{ task.name }}</td>
+
                 <td v-if=task.completed>Yes</td> <td v-else>No</td>
-                <td><button class="btn btn-danger" @click="$emit('delete:task', task.id)">Delete</button></td>
+
+                <td v-if="editMode === task.id">
+                    <button class="btn btn-success" @click="updateTask(task)">Save</button>
+                    <button class="btn btn-default" @click="editMode = null">Cancel</button>
+                </td>
+                <td v-else>
+                    <button class="btn btn-info" @click="setEditMode(task.id)">Edit</button>
+                    <button class="btn btn-danger" @click="$emit('delete:task', task.id)">Delete</button>
+                </td>
             </tr>
         </table>
     </div>
@@ -27,11 +40,26 @@ export default {
         title: String,
         tasks: Array,
     },
-    methods: {
-        updateTask: function (task) {
-            console.log(task.completed)
-            task.completed = !task.completed
+    data: function() {
+        return {
+            editMode: '',
         }
+    },
+    methods: {
+        updateTaskStatus: function (task) {
+            task.completed = !task.completed
+        },
+        setEditMode: function (id) {
+            this.editMode = id
+        },
+        updateTask: function (task) {
+            if (task.name === '') {
+                return false
+            }
+            //Send to parent component
+            this.$emit('update:task', task.id, task)
+            this.editMode = null
+        },
     }
 }
 </script>
@@ -56,5 +84,24 @@ td, th {
 .btn-danger {
     background-color: #dc3545;
     border-color: #dc3545;
+}
+
+.btn-info {
+    background-color: #02a4e4;
+    border-color: #02a4e4;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-default {
+    background-color: #888181;
+    border-color: #888181;
+}
+
+.form-control {
+    width: 50%;
 }
 </style>

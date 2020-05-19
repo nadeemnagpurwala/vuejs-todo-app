@@ -2,10 +2,9 @@
     <div>
         <h1>{{ title }}</h1>
         <form @submit.prevent="addTask">
-            <input type="text" class="form-control" name="name" v-model="name" placeholder="Name of the task">
-            <input type="hidden" v-model="id" name="id">
-            <br><br>
-            <input type="submit" class="btn btn-primary" value="Submit">
+            <input type="text" class="form-control" v-model="name" placeholder="Name of the task">
+            <input type="hidden" v-model="id">
+            <input type="submit" class="btn btn-success" value="Save">
         </form>
     </div>
 </template>
@@ -24,7 +23,7 @@ export default {
     },
     methods: {
         addTask: function () {
-            if(this.name == ''){
+            if(this.name === ''){
                 return false
             }
             const newTask = {
@@ -41,9 +40,9 @@ export default {
 </script>
 
 <style scoped>
-    .btn-primary {
-        background-color: #34495e;
-        border-color: #34495e;
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
     }
     div {
         text-align: center;

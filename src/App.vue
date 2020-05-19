@@ -2,7 +2,7 @@
   <div id="app">
     <AddTask @add:task="addTask" :title="titleAdd"/>
     <br>
-    <Tasks :title="titleList" :tasks="tasks" @delete:task="deleteTask" />
+    <Tasks :title="titleList" :tasks="tasks" @delete:task="deleteTask" @update:task="updateTask" />
   </div>
 </template>
 
@@ -48,6 +48,11 @@ export default {
     },
     addTask: function (newTask) {
         this.tasks = [...this.tasks, newTask]
+    },
+    updateTask(id, updatedTask) {
+      this.tasks = this.tasks.map(
+        task => task.id === id ? updatedTask : task
+      )
     }
   }
 }
@@ -70,11 +75,11 @@ h1 {
   display: inline-block;
   border: none;
   padding: 6px 12px;
-  cursor: pointer;
   color: #fff;
   text-align: center;
   font-size: 14px;
   border-radius: 4px;
+  margin: 10px;
 }
 
 .form-control {
@@ -84,5 +89,13 @@ h1 {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
+}
+
+.btn:focus {
+  outline:none;
+}
+
+.btn::-moz-focus-inner {
+   border: 0;
 }
 </style>
