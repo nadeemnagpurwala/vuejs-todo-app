@@ -2,23 +2,13 @@
     <div>
         <h1>{{ title }}</h1>
         <table>
-            <tr>
-                <th>Mark Complete</th>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Completed</th>
-                <th>Action</th>
-            </tr>
             <tr v-for="task in tasks" :key="task.id" :class="{ 'is-completed': task.completed }">
                 <td><input type="checkbox" @click="updateTaskStatus(task)" :checked="task.completed"></td>
-                <td>{{ task.id }}</td>
                 
                 <td v-if="editMode === task.id">
                     <input type="text" class="form-control" v-model="task.name" placeholder="Name of the task">
                 </td>
                 <td v-else>{{ task.name }}</td>
-
-                <td v-if=task.completed>Yes</td> <td v-else>No</td>
 
                 <td v-if="editMode === task.id">
                     <button class="btn btn-success" @click="updateTask(task)">Save</button>
@@ -77,7 +67,6 @@ table {
 }
 
 td, th {
-  border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
 }
